@@ -4,24 +4,24 @@ grammar FIRRTL;
 
 tokens { INDENT, DEDENT }
 
-@lexer::header {
-import firrtl.LexerHelper;
-}
-
-@lexer::members {
-  private final LexerHelper denter = new firrtl.LexerHelper()
-  {
-    @Override
-    public Token pullToken() {
-      return FIRRTLLexer.super.nextToken();
-    }
-  };
-
-  @Override
-  public Token nextToken() {
-    return denter.nextToken();
-  }
-}
+// @lexer::header {
+// import firrtl.LexerHelper;
+// }
+//
+// @lexer::members {
+//   private final LexerHelper denter = new firrtl.LexerHelper()
+//   {
+//     @Override
+//     public Token pullToken() {
+//       return FIRRTLLexer.super.nextToken();
+//     }
+//   };
+//
+//   @Override
+//   public Token nextToken() {
+//     return denter.nextToken();
+//   }
+// }
 
 /*------------------------------------------------------------------
  * PARSER RULES
@@ -46,7 +46,7 @@ dir
   | 'output'
   ;
 
-type 
+type
   : 'UInt' ('<' intLit '>')?
   | 'SInt' ('<' intLit '>')?
   | 'Fixed' ('<' intLit '>')? ('<' '<' intLit '>' '>')?
