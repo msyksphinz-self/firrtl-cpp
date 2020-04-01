@@ -1,7 +1,11 @@
+.PHONY: firrtl_build
+
+ANTLR = FIRRTL_begin
+
 SRC  =
 SRC += ../src/main.cpp
-SRC += ../antlr4/FIRRTLLexer.cpp
-SRC += ../antlr4/FIRRTLParser.cpp
+SRC += ../antlr4/$(ANTLR)Lexer.cpp
+SRC += ../antlr4/$(ANTLR)Parser.cpp
 
 INC_DIR  =
 INC_DIR += ../antlr4
@@ -11,5 +15,8 @@ CFLAGS += $(addprefix -I, $(INC_DIR))
 
 all: firrtl_cpp
 
-firrtl_cpp: $(SRC)
-	g++ -o $@ $^ $(CFLAGS) ../runtime/dist/libantlr4-runtime.a
+firrtl_cpp: $(SRC) firrtl_build
+	g++ -o $@ $(SRC) $(CFLAGS) ../runtime/dist/libantlr4-runtime.a
+
+firrtl_build:
+	$(MAKE) -C ../antlr4 TARGET=$(ANTLR)

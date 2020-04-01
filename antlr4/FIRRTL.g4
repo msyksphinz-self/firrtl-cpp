@@ -2,39 +2,18 @@
 
 grammar FIRRTL;
 
-tokens { INDENT, DEDENT }
-
-// @lexer::header {
-// import firrtl.LexerHelper;
-// }
-//
-// @lexer::members {
-//   private final LexerHelper denter = new firrtl.LexerHelper()
-//   {
-//     @Override
-//     public Token pullToken() {
-//       return FIRRTLLexer.super.nextToken();
-//     }
-//   };
-//
-//   @Override
-//   public Token nextToken() {
-//     return denter.nextToken();
-//   }
-// }
-
 /*------------------------------------------------------------------
  * PARSER RULES
  *------------------------------------------------------------------*/
 
 // Does there have to be at least one module?
 circuit
-  : 'circuit' id ':' info? INDENT module* DEDENT EOF
+  : 'circuit' id ':' info? module* EOF
   ;
 
 module
-  : 'module' id ':' info? INDENT port* moduleBlock DEDENT
-  | 'extmodule' id ':' info? INDENT port* defname? parameter* DEDENT
+  : 'module' id ':' info? port* moduleBlock
+  | 'extmodule' id ':' info? port* defname? parameter*
   ;
 
 port
@@ -85,14 +64,14 @@ simple_reset
 	;
 
 reset_block
-	: INDENT simple_reset info? NEWLINE DEDENT
+	: simple_reset info? NEWLINE
 	| '(' simple_reset ')'
   ;
 
 stmt
   : 'wire' id ':' type info?
   | 'reg' id ':' type exp ('with' ':' reset_block)? info?
-  | 'mem' id ':' info? INDENT memField* DEDENT
+  | 'mem' id ':' info? memField*
   | 'cmem' id ':' type info?
   | 'smem' id ':' type ruw? info?
   | mdir 'mport' id '=' id '[' exp ']' exp info?
@@ -132,7 +111,7 @@ simple_stmt
 */
 suite
   : simple_stmt
-  | INDENT simple_stmt+ DEDENT
+  | simple_stmt+
   ;
 
 when
@@ -357,10 +336,8 @@ fragment WHITESPACE
 	: [ \t,]+
 	;
 
-SKIP_
-	: ( WHITESPACE | COMMENT ) -> skip
-	;
-
 NEWLINE
 	:'\r'? '\n' ' '*
 	;
+
+WS : [\t\n ]+ -> skip ; // skip spaces, tabs, newlines
