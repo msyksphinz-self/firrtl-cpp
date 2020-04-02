@@ -17,7 +17,7 @@ module
   ;
 
 port
-  : dir id ':' type info? NEWLINE
+  : dir id ':' type info?
   ;
 
 dir
@@ -42,14 +42,14 @@ field
   ;
 
 defname
-  : 'defname' '=' id NEWLINE
+  : 'defname' '=' id
   ;
 
 parameter
-  : 'parameter' id '=' intLit NEWLINE
-  | 'parameter' id '=' StringLit NEWLINE
-  | 'parameter' id '=' DoubleLit NEWLINE
-  | 'parameter' id '=' RawString NEWLINE
+  : 'parameter' id '=' intLit
+  | 'parameter' id '=' StringLit
+  | 'parameter' id '=' DoubleLit
+  | 'parameter' id '=' RawString
   ;
 
 moduleBlock
@@ -64,7 +64,7 @@ simple_reset
 	;
 
 reset_block
-	: simple_reset info? NEWLINE
+	: simple_reset info?
 	| '(' simple_reset ')'
   ;
 
@@ -88,18 +88,18 @@ stmt
   ;
 
 memField
-	:  'data-type' '=>' type NEWLINE
-	| 'depth' '=>' intLit NEWLINE
-	| 'read-latency' '=>' intLit NEWLINE
-	| 'write-latency' '=>' intLit NEWLINE
-	| 'read-under-write' '=>' ruw NEWLINE
-	| 'reader' '=>' id+ NEWLINE
-	| 'writer' '=>' id+ NEWLINE
-	| 'readwriter' '=>' id+ NEWLINE
+	:  'data-type' '=>' type
+	| 'depth' '=>' intLit
+	| 'read-latency' '=>' intLit
+	| 'write-latency' '=>' intLit
+	| 'read-under-write' '=>' ruw
+	| 'reader' '=>' id+
+	| 'writer' '=>' id+
+	| 'readwriter' '=>' id+
 	;
 
 simple_stmt
-  : stmt | NEWLINE
+  : stmt
   ;
 
 /*
@@ -110,8 +110,7 @@ simple_stmt
         definitions. Let's call that _the_ "moduleBody". A "moduleBody" could possibly be empty
 */
 suite
-  : simple_stmt
-  | simple_stmt+
+  : simple_stmt+
   ;
 
 when
@@ -336,8 +335,4 @@ fragment WHITESPACE
 	: [ \t,]+
 	;
 
-NEWLINE
-	:'\r'? '\n' ' '*
-	;
-
-WS : [\t\n ]+ -> skip ; // skip spaces, tabs, newlines
+WS : [\t\n, ]+ -> skip ; // skip spaces, tabs, newlines

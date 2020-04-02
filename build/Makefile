@@ -1,6 +1,6 @@
 .PHONY: firrtl_build
 
-ANTLR = FIRRTL_begin
+ANTLR = FIRRTL
 
 SRC  =
 SRC += ../src/main.cpp
